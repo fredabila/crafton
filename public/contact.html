@@ -9,11 +9,11 @@
 <meta property="og:title" content="Contact and help | Craf7ton">
 <meta property="og:description" content="Get help with your Craf7ton order. WhatsApp is fastest.">
 <meta property="og:type" content="website">
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/css/styles.css">
-<script src="assets/js/config.js" defer></script>
-<script src="assets/js/products.js" defer></script>
-<script src="assets/js/app.js" defer></script>
+<meta property="og:image" content="/assets/img/og.png">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/css/styles.css">
+<script src="/assets/js/mockups.js" defer></script>
+<script src="/assets/js/app.js" defer></script>
 <!-- Analytics: paste your GA4 / Meta Pixel / Plausible snippet here. app.js already fires
      add_to_cart, begin_checkout, purchase and club_form_submit events into it. -->
 </head>
@@ -41,9 +41,9 @@
       <h2>Quick answers</h2>
       <div class="accordion">
         <details><summary>Where is my order?</summary><div class="acc-body">Message us your order reference (it starts with C7-) on WhatsApp and we'll check.</div></details>
-        <details><summary>What size should I get?</summary><div class="acc-body">See the <a href="size-guide.html">size guide</a>. Between sizes, go up for a relaxed fit.</div></details>
-        <details><summary>Can I return or exchange?</summary><div class="acc-body">Yes, unworn items within 7 days. See <a href="delivery-returns.html#returns">delivery and returns</a>.</div></details>
-        <details><summary>Do you do custom orders?</summary><div class="acc-body">Yes, from 10 pieces. <a href="clubs.html#quote">Request a club quote</a>.</div></details>
+        <details><summary>What size should I get?</summary><div class="acc-body">See the <a href="/size-guide">size guide</a>. Between sizes, go up for a relaxed fit.</div></details>
+        <details><summary>Can I return or exchange?</summary><div class="acc-body">Yes, unworn items within 7 days. See <a href="/delivery-returns#returns">delivery and returns</a>.</div></details>
+        <details><summary>Do you do custom orders?</summary><div class="acc-body">Yes, from 10 pieces. <a href="/clubs#quote">Request a club quote</a>.</div></details>
       </div>
     </div>
     <div class="panel">
@@ -52,6 +52,7 @@
         <label>Name<input name="name" type="text" autocomplete="name" required></label>
         <label>WhatsApp or email <span class="opt">(so we can reply)</span><input name="contact" type="text" required></label>
         <label>Message<textarea name="message" required></textarea></label>
+        <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button class="btn block" type="submit">Send</button>
         <p class="form-status" role="status"></p>
       </form>

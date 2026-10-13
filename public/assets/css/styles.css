@@ -196,7 +196,7 @@ p { margin: 0 0 1em; }
 .form-row { display: grid; gap: 12px; }
 label { font-size: 14px; font-weight: 600; display: grid; gap: 6px; }
 label .opt { font-weight: 400; color: var(--muted); }
-input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="search"], select, textarea {
+input:not([type]), input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="search"], select, textarea {
   width: 100%; min-height: 48px; padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--paper);
   font-size: 16px; /* prevents iOS zoom */
 }
@@ -405,3 +405,12 @@ th { background: var(--gray-1); font-weight: 700; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Stock, honeypot, loading */
+.hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.badge.dark { background: var(--ink); color: var(--paper); }
+.card.sold-out .card-media { opacity: .55; }
+.quick-add button:disabled, .size-opts button:disabled { opacity: .35; text-decoration: line-through; cursor: not-allowed; }
+.colour-opts button[aria-label*="sold out"] { opacity: .45; }
+body.loading #main { min-height: 60vh; }
+#bag-notes .notice { margin: 0 0 8px; }

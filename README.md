@@ -1,62 +1,106 @@
-# Craf7ton storefront
+# Craf7ton store
 
-Mobile-first storefront for Craf7ton, built from the *Craf7ton Website Wireframe and Developer Brief* (v1).
-It's plain HTML, CSS and JavaScript with no build step, so it runs on any static host (GitHub Pages, Netlify, Cloudflare Pages).
+The Craf7ton online store: a mobile-first storefront, an admin dashboard, and an API. It runs on **Vercel** with **Postgres** for data and **Vercel Blob** for product photos. Payments go through **Paystack** (Mobile Money first, then cards).
 
-## Pages
+## What's in it
 
-| Page | File |
-|---|---|
-| Home (hero rotation, shop by stack, new in, story strip, club quote, community wall, signup) | `index.html` |
-| Shop (stack, category and colour filters, sort, infinite scroll, search via `?q=`) | `shop.html` |
-| Product (swipe gallery front/back/print/on-body, sticky add to bag, size guide panel, wear it with) | `product.html?id=…` |
-| Clubs (custom order form) | `clubs.html` |
-| Story | `story.html` |
-| Bag and checkout (Bag → Details → Pay, guest checkout, campus pickup or courier, Mobile Money first) | `cart.html` |
-| Contact, Size guide, Delivery and returns | `contact.html`, `size-guide.html`, `delivery-returns.html` |
+**Storefront** (`public/`)
+- Home, shop (filter by stack, category and colour, plus search), product pages at `/products/<slug>`, clubs, story, contact, size guide, and delivery and returns.
+- A three-step checkout (Bag → Details → Pay) with no account needed. Customers choose campus pickup or courier delivery, then pay through Paystack's hosted page with Mobile Money (MTN, Telecel, AirtelTigo) or a card.
+- An order tracking page at `/order?ref=…&t=…`. It confirms payment with Paystack directly, so customers see "Payment received" even when the webhook is late.
+- Stock aware: sold-out sizes are disabled, low stock shows "only N left", and the bag corrects itself if stock changes.
+- Product pages are rendered on the server with title, description, Open Graph tags and Product JSON-LD, so links shared on WhatsApp show the product. `/sitemap.xml` and `/robots.txt` are generated.
+
+**Admin** (`/admin`, password protected)
+- **Dashboard:** sales today, 7 days and 30 days; orders to pack; low-stock alerts; inbox counts.
+- **Orders:** search and filter. Update the status (paid → processing → ready for pickup or shipped → completed), with an optional SMS or email to the customer. Mark manual MoMo orders as paid. Cancelling an order restocks it. Each order has a timeline and admin notes.
+- **Products:** add, edit and archive. Edit colours, sizes, stock per colour and size, photo uploads (front, back, close-up print, on body), and the "New in" and quote-only flags.
+- Club quote requests, contact messages, drop subscribers (with CSV export), and store settings (announcement bar, contact details, delivery fee, free-delivery threshold, pickup campuses).
+
+**API** (`server/`, served by the single function `api/index.js`)
+- **Prices and stock:** prices, stock and delivery fees are always recalculated on the server. The browser never decides what a customer pays.
+- **Paystack webhook:** checked with an HMAC-SHA512 signature, then confirmed again with Paystack's verify API. Duplicate webhooks are safe: stock is taken exactly once, and a payment for the wrong amount is never marked paid.
+- **Notifications:** SMS through Arkesel and email through Resend, for order confirmations, status updates and store alerts.
+- **Daily cron:** unpaid orders expire after 24 hours.
+- **Security:** an admin session cookie (HttpOnly, SameSite=Strict, signed) plus a CSRF header on admin changes; security headers and a CSP; honeypot and rate limits on public forms.
+
+## Deploy to Vercel
+
+1. **Import the repo** in Vercel (Add New → Project). Leave Framework Preset as **Other**; `vercel.json` handles the rest.
+2. **Add a database:** Project → Storage → Marketplace → **Neon** (Postgres). This sets `DATABASE_URL`.
+3. **Add photo storage:** Project → Storage → **Blob** → create a store. This sets `BLOB_READ_WRITE_TOKEN`.
+4. **Set environment variables** (Settings → Environment Variables). See `.env.example` for all of them:
+   - `SITE_URL`: your live address, e.g. `https://craf7ton.com`
+   - `ADMIN_PASSWORD`: a long password
+   - `SESSION_SECRET`: run `openssl rand -hex 32`
+   - `CRON_SECRET`: any random string
+   - `PAYSTACK_SECRET_KEY`: from the Paystack dashboard. Start with `sk_test_…`, switch to `sk_live_…` at launch.
+   - `RESEND_API_KEY`, `MAIL_FROM`, `STORE_EMAIL`: order emails
+   - `ARKESEL_API_KEY`, `SMS_SENDER`, `STORE_PHONE`: order SMS
+5. **Create the tables and load the starter products** (run locally against the Neon database):
+   ```sh
+   npm install
+   vercel env pull .env        # or paste DATABASE_URL into .env
+   npm run migrate
+   npm run seed                # starter catalogue, 20 units per variant (SEED_STOCK=0 for none)
+   ```
+6. **Set up the Paystack webhook:** in Paystack → Settings → API Keys & Webhooks, set the webhook URL to `https://YOUR-DOMAIN/api/paystack/webhook`.
+7. **Deploy**, open `/admin`, log in, and fill in **Settings** and real stock counts.
+
+### Before taking real money
+- [ ] Replace `public/assets/img/logo.svg` with the supplied wordmark (keep the filename).
+- [ ] Set real prices, stock and photos in **Admin → Products**. Starter prices and the size chart are placeholders.
+- [ ] Set the WhatsApp number, email, social links, delivery fee and campuses in **Admin → Settings**.
+- [ ] Verify your sending domain in Resend and get your Arkesel sender ID approved.
+- [ ] Do one real Paystack **test** payment end to end (MoMo and card), then switch to live keys.
+- [ ] Have the brand team approve the delivery, returns and story copy (`public/*.html`).
+- [ ] Optional: add analytics. `app.js` already sends `add_to_cart`, `begin_checkout`, `purchase` and `club_form_submit` to `dataLayer`, `gtag`, `plausible` and `fbq`. Allow the analytics domain in the CSP in `vercel.json`.
+- [ ] Optional: turn on Vercel Firewall rate limiting for `/api/checkout` and `/api/admin/login`.
+
+### Without Paystack
+If `PAYSTACK_SECRET_KEY` is empty, checkout still works in **manual MoMo mode**. The order is saved as "awaiting manual payment", and the customer and store are both notified. You then send the customer your MoMo number on WhatsApp, and once the money arrives you press **Mark as paid** in the admin. That takes the items out of stock and texts the customer.
 
 ## Run locally
 
+Needs Node 22+ and a Postgres database (local, Docker, or a free Neon branch).
+
 ```sh
-python3 -m http.server 8000
-# open http://localhost:8000
+npm install
+cp .env.example .env          # set DATABASE_URL, ADMIN_PASSWORD, SESSION_SECRET
+npm run migrate && npm run seed
+npm run dev                   # http://localhost:3000, admin at /admin
 ```
 
-## Before launch: what you need to fill in
+Without a Blob token, local uploads are saved to `public/uploads/`.
 
-All store settings live in **`assets/js/config.js`**:
+## Tests
 
-- `whatsapp`, `email`, `socialHandle`, `instagram`, `tiktok`: real contact details (placeholders for now).
-- `formEndpoint`: optional. Set it to a Formspree, Getform or Google Apps Script URL so club quotes, contact messages, drop signups and orders reach the store inbox. Without it, forms open WhatsApp with the message pre-filled and offer an email link.
-- `paystackPublicKey`: turns on real Mobile Money and card payments through Paystack Inline. Without it, checkout runs in **order by WhatsApp** mode: the customer places the order, sends it to the store on WhatsApp, and pays by MoMo manually.
-- `delivery.courierFee`, `delivery.campuses`: confirm with the brand team.
+```sh
+createdb crafton_test         # the tests wipe this database
+npm test                      # uses DATABASE_URL from .env.test
+```
 
-Other files:
+The integration tests run the real API against Postgres, with a mock Paystack server. They cover price tampering, stock limits, webhook signatures, idempotent payment, amount mismatches, manual mode, restocking on cancel, admin auth and CSRF, product CRUD and the cron. CI runs them on every push (`.github/workflows/test.yml`).
 
-- **Logo:** `assets/img/logo.svg` is a placeholder. Replace it with the supplied wordmark file and keep the filename. The brief says not to retype the wordmark in a font.
-- **Products and prices:** `assets/js/products.js`. Prices are placeholders. Stacks and categories are tags, so the shop-by-stack tiles and filters pick up new products automatically.
-- **Photos:** products show generated front/back mockups until you add real photos. Add an `images` object to a product (`front`, `back`, `print`, `person`, WebP, lazy loaded). Keep the hero under 150 KB.
-- **Community wall:** add customer photos to the `WALL` array in `assets/js/app.js`.
-- **Size chart:** `SIZE_TABLE` in `assets/js/app.js`. The measurements are placeholders, so check them against the real blanks.
-- **Policy copy:** the delivery, returns and story text is a draft for the brand team to approve.
+## Project layout
 
-## Analytics
-
-`app.js` pushes these events to `window.dataLayer`. It also forwards them to `gtag`, `plausible` and `fbq` when they're present:
-`add_to_cart`, `begin_checkout`, `purchase`, `club_form_submit` (plus `generate_lead` and `sign_up`).
-Paste your analytics snippet into the `<head>` of each page (there's a comment marking the spot).
-
-## Payments: important
-
-Paystack supports Ghana Mobile Money (MTN, Telecel, AirtelTigo) and cards in GHS. This front end only opens the payment popup.
-**Before fulfilling an order, verify each payment on the server** with a Paystack webhook or the Verify Transaction API.
-A static site cannot do this by itself, so you'll need a small serverless function, or a move to a platform.
-
-## Shopify / WooCommerce
-
-The brief recommends Shopify or WooCommerce for launch. This build is the agreed design and UX as working code: the layout, components, copy and flows map one-to-one onto a theme.
-If you move to a platform, keep `styles.css` and port the sections into theme templates. The cart, checkout, payments and product admin then come from the platform, and `config.js` / `products.js` are no longer needed.
+```
+api/index.js          Vercel function: routes every /api/* request to server/app.js
+server/
+  app.js              API routes (public, webhook, admin, SEO)
+  orders.js           checkout, payment confirmation, stock, status changes
+  catalog.js          product shaping for the storefront
+  paystack.js         Paystack API + webhook signature check
+  notify.js           SMS (Arkesel) and email (Resend)
+  auth.js             admin login and sessions
+  settings.js         store settings with defaults
+  taxonomy.js         stacks, categories, statuses
+  schema.sql          database schema
+  seed-products.js    starter catalogue
+scripts/              migrate, seed, local dev server
+public/               storefront and admin (static)
+tests/                API integration tests
+```
 
 ## Not in v1 (per the brief)
-
-Accounts and loyalty, live social feed, AI chatbot, comparison tool, app.
+Customer accounts and loyalty, live social feed, AI chatbot, comparison tool, app. Automated WhatsApp messages need Meta's WhatsApp Business API and approved templates, so v1 sends SMS and email automatically and uses WhatsApp links for conversations.

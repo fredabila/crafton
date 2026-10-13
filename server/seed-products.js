@@ -1,48 +1,14 @@
 /*
- * Product catalogue. This stands in for the product admin: stacks and categories are tags,
- * so the "Shop by stack" tiles and filters pick products up automatically.
- *
- * Prices are TODO placeholders until the brand team confirms them.
- * `images` is optional: add real WebP photo paths (front, back, print, person) and they
- * replace the generated mockups. Example:
- *   images: { front: 'assets/img/products/git-brain-tee-front.webp', back: '...', print: '...', person: '...' }
+ * Starting catalogue, loaded into the database by `npm run seed`.
+ * After launch, manage products in the admin (/admin) instead of editing this file.
+ * Prices here are in GHS; the database stores pesewas. Prices are placeholders.
  */
-window.CRAFTON_STACKS = [
-  { id: 'frontend', name: 'Frontend', glyph: '</>' },
-  { id: 'backend', name: 'Backend', glyph: '{ }' },
-  { id: 'git-devops', name: 'Git and DevOps', glyph: '$_' },
-  { id: 'ai-data', name: 'AI and Data', glyph: '∑' },
-  { id: 'hardware', name: 'Hardware', glyph: '⏚' },
-  { id: 'campus-clubs', name: 'Campus clubs', glyph: '#' }
-];
-
-window.CRAFTON_CATEGORIES = [
-  { id: 'tees', name: 'Tees' },
-  { id: 'hoodies', name: 'Hoodies' },
-  { id: 'caps', name: 'Caps' },
-  { id: 'accessories', name: 'Accessories' }
-];
-
-window.CRAFTON_COLLECTION_LINES = {
-  all: 'Printed both sides. Heavy cotton that survives a hackathon.',
-  frontend: 'For people who argue about border-radius.',
-  backend: 'For the ones who keep production alive.',
-  'git-devops': 'Commit often. Wear it more.',
-  'ai-data': 'Trained on coffee and late nights.',
-  hardware: 'For builders who own a soldering iron.',
-  'campus-clubs': 'Your club, our fabric. Bulk pricing on request.',
-  tees: 'Front logo, loud back print.',
-  hoodies: 'For cold labs and long nights.',
-  caps: 'Low effort, high signal.',
-  accessories: 'Small things for your setup.'
-};
-
 const BLACK = { name: 'Black', hex: '#111111' };
 const WHITE = { name: 'White', hex: '#f4f4f2' };
 const ASH = { name: 'Ash grey', hex: '#9a9a96' };
 const ORANGE = { name: 'Signal orange', hex: '#f5a800' };
 
-window.CRAFTON_PRODUCTS = [
+export const PRODUCTS = [
   {
     id: 'git-brain-tee', name: 'Git Brain Tee', type: 'tee', category: 'tees',
     stacks: ['git-devops'], price: 180, isNew: true, drop: '01',
