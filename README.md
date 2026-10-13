@@ -37,15 +37,9 @@ The Craf7ton online store: a mobile-first storefront, an admin dashboard, and an
    - `PAYSTACK_SECRET_KEY`: from the Paystack dashboard. Start with `sk_test_…`, switch to `sk_live_…` at launch.
    - `RESEND_API_KEY`, `MAIL_FROM`, `STORE_EMAIL`: order emails
    - `ARKESEL_API_KEY`, `SMS_SENDER`, `STORE_PHONE`: order SMS
-5. **Create the tables and load the starter products** (run locally against the Neon database):
-   ```sh
-   npm install
-   vercel env pull .env        # or paste DATABASE_URL into .env
-   npm run migrate
-   npm run seed                # starter catalogue, 20 units per variant (SEED_STOCK=0 for none)
-   ```
+5. **Deploy** (or redeploy after adding the database). Each build creates or updates the database tables and adds any starter products that are missing, so nothing needs to run on your computer. Starter products start with 0 stock (set `SEED_STOCK` to change that). Existing products and stock are never overwritten.
 6. **Set up the Paystack webhook:** in Paystack → Settings → API Keys & Webhooks, set the webhook URL to `https://YOUR-DOMAIN/api/paystack/webhook`.
-7. **Deploy**, open `/admin`, log in, and fill in **Settings** and real stock counts.
+7. Open `/admin`, log in, and fill in **Settings** and real stock counts.
 
 ### Before taking real money
 - [ ] Replace `public/assets/img/logo.svg` with the supplied wordmark (keep the filename).
