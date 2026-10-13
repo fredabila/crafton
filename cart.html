@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bag and checkout | Craf7ton</title>
+<meta name="description" content="Your Craf7ton bag. Pay with Mobile Money or card.">
+<meta name="theme-color" content="#0b0b0b">
+<meta property="og:title" content="Bag and checkout | Craf7ton">
+<meta property="og:description" content="Your Craf7ton bag. Pay with Mobile Money or card.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/styles.css">
+<script src="assets/js/config.js" defer></script>
+<script src="assets/js/products.js" defer></script>
+<script src="assets/js/app.js" defer></script>
+<!-- Analytics: paste your GA4 / Meta Pixel / Plausible snippet here. app.js already fires
+     add_to_cart, begin_checkout, purchase and club_form_submit events into it. -->
+</head>
+<body data-page="cart">
+<div id="site-header"></div>
+<main id="main">
+<div class="wrap page-head" style="padding-bottom:0">
+  <ol class="steps" aria-label="Checkout progress"><li>1 Bag</li><li>2 Details</li><li>3 Pay</li></ol>
+</div>
+<div class="wrap checkout">
+  <div>
+    <section id="step-bag" aria-labelledby="bag-h">
+      <h1 id="bag-h" style="font-size:28px">Your bag</h1>
+      <div id="bag-empty" class="empty" hidden><p>Your bag is empty.</p><a class="btn" href="shop.html">Shop Drop 01</a></div>
+      <ul class="line-items" id="line-items"></ul>
+      <button class="btn block" type="button" id="to-details" style="margin-top:16px">Continue to details</button>
+      <p class="tiny muted" style="margin-top:8px;text-align:center">Guest checkout. No account needed.</p>
+    </section>
+
+    <section id="step-details" hidden aria-labelledby="details-h">
+      <h1 id="details-h" style="font-size:28px">Your details</h1>
+      <form class="form" id="details-form" novalidate>
+        <label>Full name<input name="name" type="text" autocomplete="name" required></label>
+        <div class="form-row two">
+          <label>Phone (WhatsApp if possible)<input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="024 000 0000" required></label>
+          <label>Email <span class="opt">(optional)</span><input name="email" type="email" autocomplete="email"></label>
+        </div>
+        <fieldset class="choice-group">
+          <legend>How do you want it?</legend>
+          <label class="choice"><input type="radio" name="method" value="pickup"><span>Campus pickup <span class="sub">Free. We'll message you when it's ready.</span></span></label>
+          <label class="choice"><input type="radio" name="method" value="courier"><span>Courier delivery <span class="sub"><span id="courier-fee"></span>, 1 to 3 working days. Free on 10+ pieces.</span></span></label>
+        </fieldset>
+        <div id="pickup-fields"><label>Campus<select name="campus" id="campus"></select></label></div>
+        <div id="courier-fields" hidden class="form">
+          <label>Delivery address or landmark<input name="address" type="text" autocomplete="street-address" data-req></label>
+          <label>Town / city<input name="city" type="text" autocomplete="address-level2" data-req></label>
+        </div>
+        <label>Send order updates by
+          <select name="updates"><option>WhatsApp</option><option>SMS</option><option>Email</option></select>
+        </label>
+        <label>Notes <span class="opt">(optional)</span><textarea name="notes" placeholder="Hostel, room, best time to call"></textarea></label>
+        <p class="form-status" role="status"></p>
+        <button class="btn block" type="submit">Continue to payment</button>
+        <button class="link-btn small" type="button" data-back="bag">Back to bag</button>
+      </form>
+    </section>
+
+    <section id="step-pay" hidden aria-labelledby="pay-h">
+      <h1 id="pay-h" style="font-size:28px">Payment</h1>
+      <form class="form" id="pay-form" novalidate>
+        <fieldset class="choice-group">
+          <legend>Pay with</legend>
+          <label class="choice"><input type="radio" name="pay" value="momo" checked><span>Mobile Money <span class="sub">MTN MoMo, Telecel Cash, AirtelTigo Money</span></span></label>
+          <div id="momo-fields" class="pay-extra">
+            <label>Network<select name="network"><option>MTN</option><option>Telecel</option><option>AirtelTigo</option></select></label>
+            <label>Mobile Money number<input id="momo-number" name="momo" type="tel" inputmode="tel" autocomplete="tel"></label>
+          </div>
+          <label class="choice"><input type="radio" name="pay" value="card"><span>Card <span class="sub">Visa, Mastercard</span></span></label>
+        </fieldset>
+        <p class="notice" id="pay-mode-note">Online payment is being set up. Place your order and send it to us on WhatsApp; we'll reply with the MoMo number to pay.</p>
+        <p class="form-status" role="status"></p>
+        <button class="btn block accent" type="submit">Place order</button>
+        <button class="link-btn small" type="button" data-back="details">Back to details</button>
+      </form>
+    </section>
+
+    <section id="step-done" hidden aria-labelledby="done-h">
+      <div class="confirm">
+        <h1 id="done-h" style="font-size:30px">Order placed</h1>
+        <span class="ref" id="done-ref"></span>
+        <p id="done-msg" style="max-width:40ch"></p>
+        <a class="btn" id="done-wa" href="#" target="_blank" rel="noopener">Send order on WhatsApp</a>
+        <a class="small" href="shop.html">Keep shopping</a>
+      </div>
+    </section>
+  </div>
+  <aside class="summary" id="summary" aria-label="Order summary"></aside>
+</div>
+</main>
+
+<div id="site-footer"></div>
+</body>
+</html>

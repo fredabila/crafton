@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shop | Craf7ton</title>
+<meta name="description" content="Shop Craf7ton tees, hoodies, caps and accessories by stack or category.">
+<meta name="theme-color" content="#0b0b0b">
+<meta property="og:title" content="Shop | Craf7ton">
+<meta property="og:description" content="Shop Craf7ton tees, hoodies, caps and accessories by stack or category.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/styles.css">
+<script src="assets/js/config.js" defer></script>
+<script src="assets/js/products.js" defer></script>
+<script src="assets/js/app.js" defer></script>
+<!-- Analytics: paste your GA4 / Meta Pixel / Plausible snippet here. app.js already fires
+     add_to_cart, begin_checkout, purchase and club_form_submit events into it. -->
+</head>
+<body data-page="shop">
+<div id="site-header"></div>
+<main id="main">
+<div class="wrap page-head">
+  <span class="eyebrow">Drop 01</span>
+  <h1 id="shop-title">Shop everything</h1>
+  <p class="benefit" id="shop-line" style="margin:0"></p>
+</div>
+<div class="filters">
+  <div class="wrap">
+    <div class="cat-row" id="stack-filter" role="group" aria-label="Filter by stack"></div>
+    <div class="cat-row" id="cat-filter" role="group" aria-label="Filter by category"></div>
+  </div>
+</div>
+<div class="wrap">
+  <div class="filter-bar">
+    <div class="colour-filter" id="colour-filter" role="group" aria-label="Filter by colour"></div>
+    <label class="visually-hidden" for="sort">Sort</label>
+    <select id="sort"><option value="featured">Featured</option><option value="new">Newest</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option></select>
+  </div>
+  <p class="small muted" style="margin:0 0 12px"><span id="count"></span> <button class="link-btn" type="button" id="clear-q" hidden>Clear search</button></p>
+  <div class="product-grid" id="grid" aria-live="polite"></div>
+  <div class="sentinel" id="sentinel"></div>
+  <div style="height:40px"></div>
+</div>
+</main>
+
+<div id="site-footer"></div>
+</body>
+</html>

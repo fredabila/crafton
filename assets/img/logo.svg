@@ -1,0 +1,5 @@
+<!-- PLACEHOLDER. Replace this file with the supplied Craf7ton wordmark (SVG preferred). Keep the filename. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60" role="img" aria-label="Craf7ton">
+  <rect width="240" height="60" rx="30" fill="#0b0b0b"/>
+  <text x="120" y="40" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="28" fill="#ffffff">Craf<tspan fill="#f5a800">7</tspan>ton</text>
+</svg>

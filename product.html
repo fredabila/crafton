@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Product | Craf7ton</title>
+<meta name="description" content="Craf7ton tech apparel, printed both sides.">
+<meta name="theme-color" content="#0b0b0b">
+<meta property="og:title" content="Product | Craf7ton">
+<meta property="og:description" content="Craf7ton tech apparel, printed both sides.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/styles.css">
+<script src="assets/js/config.js" defer></script>
+<script src="assets/js/products.js" defer></script>
+<script src="assets/js/app.js" defer></script>
+<!-- Analytics: paste your GA4 / Meta Pixel / Plausible snippet here. app.js already fires
+     add_to_cart, begin_checkout, purchase and club_form_submit events into it. -->
+</head>
+<body data-page="product">
+<div id="site-header"></div>
+<main id="main">
+<div class="wrap">
+  <p class="small muted" id="crumb" style="margin:12px 0"></p>
+  <div class="pdp">
+    <div class="gallery" aria-label="Product images">
+      <div class="gallery-track" id="gallery-track"></div>
+      <div class="gallery-dots" id="gallery-dots"></div>
+    </div>
+    <div class="buy">
+      <h1 id="p-name"></h1>
+      <div class="price" id="p-price"></div>
+      <p class="buy-tag" id="p-tag"></p>
+      <div class="opt-label">Colour <span id="colour-name"></span></div>
+      <div class="colour-opts" id="colour-opts" role="group" aria-label="Colour"></div>
+      <div class="opt-label">Size <span id="size-name"></span></div>
+      <div class="size-opts" id="size-opts" role="group" aria-label="Size"></div>
+      <button class="btn block" type="button" data-add>Add to bag</button>
+      <div class="info-links">
+        <button class="link-btn" type="button" id="size-guide-link" data-size-guide>Size guide</button>
+        <a href="#delivery">Delivery</a>
+        <a href="#delivery">Returns</a>
+      </div>
+      <a class="club-nudge" href="clubs.html#quote">Want this for your club? <b>Get a custom quote</b></a>
+    </div>
+  </div>
+
+  <section class="section" style="padding-bottom:16px" aria-label="Product details">
+    <div class="accordion">
+      <details open><summary>Description</summary><div class="acc-body" id="p-desc"></div><p class="small muted" id="p-back"></p></details>
+      <details id="delivery"><summary>Delivery and returns</summary><div class="acc-body">
+        <ul><li>Free campus pickup at UMaT and partner campuses.</li><li>Courier delivery anywhere in Ghana, usually 1 to 3 working days.</li><li>Free delivery on orders of 10 pieces or more.</li><li>Unworn items can be exchanged within 7 days. <a href="delivery-returns.html">Full policy</a></li></ul>
+      </div></details>
+      <details><summary>Reviews</summary><div class="acc-body">
+        <div class="reviews-empty">No reviews yet. Bought this? Send us a photo and a line on WhatsApp and we'll add it here.</div>
+      </div></details>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:16px" aria-labelledby="ww-h">
+    <div class="section-head"><h2 id="ww-h">Wear it with</h2></div>
+    <div class="swipe-row" id="wear-with"></div>
+  </section>
+</div>
+</main>
+<div class="sticky-buy" aria-label="Quick buy">
+  <div class="sb-info"><b id="sb-name"></b><span id="sb-meta" class="muted"></span></div>
+  <button class="btn" type="button" data-add>Add to bag</button>
+</div>
+
+<dialog class="modal sheet" id="size-guide" aria-labelledby="sg-title">
+  <div class="modal-inner">
+    <div class="modal-top"><h2 id="sg-title">Size guide</h2><button class="icon-btn" type="button" data-close aria-label="Close size guide">✕</button></div>
+    <p class="small muted">Measured flat on the garment, then doubled. Between sizes? Size up for a relaxed fit.</p>
+    <div class="table-scroll" data-size-table></div>
+    <p class="small" style="margin-top:12px">How to measure: lay your favourite tee flat. Chest is armpit to armpit, times two. Length is the top of the shoulder to the hem.</p>
+  </div>
+</dialog>
+<div id="site-footer"></div>
+</body>
+</html>
